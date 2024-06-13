@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./pg"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ########################################
+// Post
+// ########################################
+model Post {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  likeCount Int       @default(0)
+  authorId  String
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  likes    PostLike[]
+  comments Comment[]
+
+  // TODO: Add index
+}
+
+// ########################################
+// PostLike
+// ########################################
+model PostLike {
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@id([postId, userId])
+}
+
+// ########################################
+// Comment
+// ########################################
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  postId    String
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parentId  String?
+  authorId  String
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  // TODO: Add index
+}

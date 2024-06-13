@@ -1,0 +1,571 @@
+{
+  "info": {
+    "_postman_id": "934e3c52-e0fa-4580-aa72-b7c13c9ac8c5",
+    "name": "NodeJS API Server Template Demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16005388"
+  },
+  "item": [
+    {
+      "name": "Get Post",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/v1/posts/{{postId}}",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "posts", "{{postId}}"],
+          "query": [
+            {
+              "key": "withComments",
+              "value": "true",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Like Post",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Content-Length",
+            "value": "0",
+            "name": "content-length",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          },
+          {
+            "key": "authorization",
+            "value": "{{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/v1/posts/like/{{postId}}",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "posts", "like", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Unlike Post",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Content-Length",
+            "value": "0",
+            "name": "content-length",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          },
+          {
+            "key": "authorization",
+            "value": "{{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/v1/posts/like/{{postId}}",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "posts", "like", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Posts",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/v1/posts?limit=20&orderBy=CREATED_AT_DESC",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "posts"],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20"
+            },
+            {
+              "key": "orderBy",
+              "value": "CREATED_AT_DESC"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Post",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          },
+          {
+            "key": "authorization",
+            "value": "{{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/v1/posts/{{postId}}",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "posts", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "name": "content-type",
+            "type": "text"
+          },
+          {
+            "key": "Content-Length",
+            "value": "<calculated when request is sent>",
+            "name": "content-length",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"My Post\",\n    \"content\": \"Content\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/v1/posts",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "posts"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "name": "content-type",
+            "type": "text"
+          },
+          {
+            "key": "Content-Length",
+            "value": "<calculated when request is sent>",
+            "name": "content-length",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"content\": \"Comment 3\",\n    \"postId\": \"{{postId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/v1/comments",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Comment",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache",
+            "name": "cache-control",
+            "type": "text"
+          },
+          {
+            "key": "Postman-Token",
+            "value": "<calculated when request is sent>",
+            "name": "postman-token",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "name": "content-type",
+            "type": "text"
+          },
+          {
+            "key": "Content-Length",
+            "value": "<calculated when request is sent>",
+            "name": "content-length",
+            "type": "text"
+          },
+          {
+            "key": "Host",
+            "value": "<calculated when request is sent>",
+            "name": "host",
+            "type": "text"
+          },
+          {
+            "key": "User-Agent",
+            "value": "PostmanRuntime/7.32.1",
+            "name": "user-agent",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*",
+            "name": "accept",
+            "type": "text"
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate, br",
+            "name": "accept-encoding",
+            "type": "text"
+          },
+          {
+            "key": "Connection",
+            "value": "keep-alive",
+            "name": "connection",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "{{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/v1/comments/{{commentId}}",
+          "host": ["{{host}}"],
+          "path": ["api", "v1", "comments", "{{commentId}}"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YjRlZTNlMi0wZmZlLTQ4YjItODIyNy0xZDc2NWYxMjZiNTEiLCJpYXQiOjE3MTgyNzA5MTIsImV4cCI6MTcxODI3NDUxMn0.ccgeb3irF4uY_jtgh-QB6jMo1j5Dw_QZhmP79H1o1j0",
+      "type": "string"
+    },
+    {
+      "key": "host",
+      "value": "http://127.0.0.1:8080",
+      "type": "string"
+    },
+    {
+      "key": "postId",
+      "value": "e5c20521-1b28-498c-8208-787b6d3bb26b",
+      "type": "string"
+    },
+    {
+      "key": "commentId",
+      "value": "4ed07a61-97e0-4c05-a2c6-fa9e37d6b6c3",
+      "type": "string"
+    }
+  ]
+}
