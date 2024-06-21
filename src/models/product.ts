@@ -1,29 +1,31 @@
 import { z } from "zod";
 
-import { RawPackage } from "@/repos/packageRepo";
+import { RawProduct } from "@/repos/productRepo";
 import { registerModelToApiDocs } from "@/utils/api/openapi";
 import { Region } from "@/utils/enums";
 
-export const Package = registerModelToApiDocs(
-  "Package",
+import { formatPackage, Package } from "./package";
+
+export const Product = registerModelToApiDocs(
+  "Product",
   z.object({
     id: z.number(),
     name: z.string(),
     region: z.nativeEnum(Region),
-    productId: z.number().int(),
+    package: Package.array().optional(),
     createdAt: z.date(),
     updatedAt: z.date(),
   }),
 );
 
-export type Package = z.infer<typeof Package>;
+export type Product = z.infer<typeof Product>;
 
-export function formatPackage(raw: RawPackage): Package {
+export function formatProduct(raw: RawProduct): Product {
   return {
     id: raw.id,
     name: raw.name,
     region: raw.region as Region,
-    productId: raw.productId,
+    package: raw.package?.map(formatPackage),
     createdAt: raw.createdAt,
     updatedAt: raw.updatedAt,
   };

@@ -11,8 +11,13 @@ import {
   createPackageService,
   PackageService,
 } from "./endpoints/package/service";
+import {
+  createProductService,
+  ProductService,
+} from "./endpoints/product/service";
 import { createNativeProductRepo } from "./repos/nativeProductRepo";
 import { createPackageRepo } from "./repos/packageRepo";
+import { createProductRepo } from "./repos/productRepo";
 import { APIServer, createServer } from "./utils/api/createServer";
 import { env } from "./utils/env";
 import { logger } from "./utils/logger";
@@ -20,6 +25,7 @@ import { logger } from "./utils/logger";
 interface Services {
   nativeProductService: NativeProductService;
   packageService: PackageService;
+  productService: ProductService;
 }
 
 export function setupRealServices(): Services {
@@ -34,6 +40,7 @@ export function setupRealServices(): Services {
   // Repos
   const nativeProductRepo = createNativeProductRepo(db);
   const packageRepo = createPackageRepo(db);
+  const productRepo = createProductRepo(db);
 
   // Services
   const nativeProductService = createNativeProductService({
@@ -42,10 +49,14 @@ export function setupRealServices(): Services {
   const packageService = createPackageService({
     packageRepo,
   });
+  const productService = createProductService({
+    productRepo,
+  });
 
   return {
     nativeProductService,
     packageService,
+    productService,
   };
 }
 
@@ -59,10 +70,14 @@ export function setupMockServices(): Services {
   const packageService = createPackageService({
     packageRepo: mock(),
   });
+  const productService = createProductService({
+    productRepo: mock(),
+  });
 
   return {
     nativeProductService,
     packageService,
+    productService,
   };
 }
 
