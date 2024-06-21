@@ -1,22 +1,18 @@
 import { PrismaClient } from "@prisma/pg/index";
 import { mock } from "vitest-mock-extended";
 
-import { createCommentRoutes } from "./endpoints/comment/route";
+import { createNativeProductRoutes } from "./endpoints/nativeProduct/route";
 import {
-  CommentService,
-  createCommentService,
-} from "./endpoints/comment/service";
-import { createPostRoutes } from "./endpoints/post/route";
-import { createPostService, PostService } from "./endpoints/post/service";
-import { createCommentRepo } from "./repos/commentRepo";
-import { createPostRepo } from "./repos/postRepo";
+  createNativeProductService,
+  NativeProductService,
+} from "./endpoints/nativeProduct/service";
+import { createNativeProductRepo } from "./repos/nativeProductRepo";
 import { APIServer, createServer } from "./utils/api/createServer";
 import { env } from "./utils/env";
 import { logger } from "./utils/logger";
 
 interface Services {
-  commentService: CommentService;
-  postService: PostService;
+  nativeProductService: NativeProductService;
 }
 
 export function setupRealServices(): Services {
@@ -29,16 +25,15 @@ export function setupRealServices(): Services {
   // });
 
   // Repos
-  const commentRepo = createCommentRepo(db);
-  const postRepo = createPostRepo(db);
+  const nativeProductRepo = createNativeProductRepo(db);
 
   // Services
-  const commentService = createCommentService({ commentRepo });
-  const postService = createPostService({ postRepo, commentRepo });
+  const nativeProductService = createNativeProductService({
+    nativeProductRepo,
+  });
 
   return {
-    commentService,
-    postService,
+    nativeProductService,
   };
 }
 
@@ -46,22 +41,19 @@ export function setupRealServices(): Services {
  * 建立假的 services 以避免真的連接到資料庫與其他服務
  */
 export function setupMockServices(): Services {
-  const commentService = createCommentService({ commentRepo: mock() });
-  const postService = createPostService({
-    postRepo: mock(),
-    commentRepo: mock(),
+  const nativeProductService = createNativeProductService({
+    nativeProductRepo: mock(),
   });
 
   return {
-    commentService,
-    postService,
+    nativeProductService,
   };
 }
 
 /**
  * 建立 server 並註冊所有的 api routes
  */
-export async function setupServer({ commentService, postService }: Services) {
+export async function setupServer({ nativeProductService }: Services) {
   const server = createServer({
     healthCheckPath: "/api/v1/healthz",
     apiDocs: {
@@ -69,8 +61,7 @@ export async function setupServer({ commentService, postService }: Services) {
       filePath: "openapi.yaml",
     },
   });
-  server.register(createCommentRoutes({ commentService }));
-  server.register(createPostRoutes({ postService }));
+  server.register(createNativeProductRoutes({ nativeProductService }));
 
   await server.ready();
   return server;

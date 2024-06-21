@@ -1,6 +1,5 @@
 import {
   BadRequestError,
-  ConflictError,
   InternalServerError,
   NoPermissionError,
   NotFoundError,
@@ -18,17 +17,4 @@ export const ServiceError = {
   Unauthorized: new UnauthorizedError("0005", "Unauthorized"),
   EmailNotVerified: new UnauthorizedError("0006", "Email not verified"),
   InvalidNextKey: new BadRequestError("0007", "Invalid next key"),
-
-  // Post
-  PostNotFound: new NotFoundError("5000", "Post not found"),
-  PostAlreadyLiked: new ConflictError("5001", "Post already liked"),
-  PostNotLiked: new ConflictError("5002", "Post not liked"),
-
-  // Comment
-  CommentNotFound: new NotFoundError("5004", "Comment not found"),
-  CommentOnSubcomment: new ConflictError("5005", "Comment on subcomment"),
-  ParentCommentNotMatchWithPost: new ConflictError(
-    "5006",
-    "ParentCommentNotMatchWithPost",
-  ),
 };

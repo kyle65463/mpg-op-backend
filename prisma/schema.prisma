@@ -8,47 +8,78 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ########################################
-// Post
-// ########################################
-model Post {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  likeCount Int       @default(0)
-  authorId  String
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
+model NativeProduct {
+  id        String
+  name      String
+  source    String
+  region    String
+  packages  NativePackage[]
+  productId Int?
+  product   Product?        @relation(fields: [productId], references: [id])
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
-  likes    PostLike[]
-  comments Comment[]
-
-  // TODO: Add index
+  @@id([id, source])
+  @@map("native_products")
 }
 
-// ########################################
-// PostLike
-// ########################################
-model PostLike {
-  postId String
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId String
+model NativePackage {
+  id              String
+  name            String
+  source          String
+  region          String
+  nativeProductId String
+  nativeProduct   NativeProduct @relation(fields: [nativeProductId, source], references: [id, source], onDelete: Cascade)
+  packageId       Int?
+  package         Package?      @relation(fields: [packageId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
-  @@id([postId, userId])
+  @@id([id, source])
+  @@map("native_packages")
 }
 
-// ########################################
-// Comment
-// ########################################
-model Comment {
-  id        String    @id @default(uuid())
-  content   String
-  postId    String
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  parentId  String?
-  authorId  String
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
+model Product {
+  id             Int             @id @default(autoincrement())
+  name           String
+  region         String
+  packages       Package[]
+  nativeProducts NativeProduct[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
-  // TODO: Add index
+  @@map("products")
+}
+
+model Package {
+  id             Int             @id @default(autoincrement())
+  name           String
+  region         String
+  productId      Int
+  product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  nativePackages NativePackage[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@map("packages")
+}
+
+model Order {
+  id              Int      @id @default(autoincrement())
+  status          String
+  quantity        Int
+  customer        Json
+  bookedAt        DateTime
+  departureAt     DateTime
+  nativeId        String
+  nativeProductId String
+  nativePackageId String
+  source          String
+  region          String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([nativeId, source])
+  @@map("orders")
 }
