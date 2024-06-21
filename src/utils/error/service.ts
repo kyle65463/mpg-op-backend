@@ -18,6 +18,12 @@ export const ServiceError = {
   EmailNotVerified: new UnauthorizedError("0006", "Email not verified"),
   InvalidNextKey: new BadRequestError("0007", "Invalid next key"),
 
+  // Native Product
+  NativeProductNotFound: new NotFoundError("0500", "Native product not found"),
+
+  // Native Package
+  NativePackageNotFound: new NotFoundError("0600", "Native package not found"),
+
   // Product
   ProductNotFound: new NotFoundError("1000", "Package not found"),
 

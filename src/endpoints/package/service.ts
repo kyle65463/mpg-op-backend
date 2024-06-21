@@ -15,6 +15,7 @@ import {
   ListPackagesRequest,
   ListPackagesRequestQuery,
   ListPackagesResponse,
+  PairPackageRequest,
 } from "./schema";
 
 function handleError(err: unknown): never {
@@ -23,6 +24,9 @@ function handleError(err: unknown): never {
   }
   if (areErrorsEqual(err, RepoError.ProductNotFound)) {
     throw ServiceError.ProductNotFound;
+  }
+  if (areErrorsEqual(err, RepoError.NativePackageNotFound)) {
+    throw ServiceError.NativePackageNotFound;
   }
   throw err;
 }
@@ -61,6 +65,12 @@ export const createPackageService = ({
 
     deletePackage: async (req: DeletePackageRequest): Promise<void> => {
       await packageRepo.delete(req.id).catch(handleError);
+    },
+
+    pairPackage: async (req: PairPackageRequest): Promise<void> => {
+      await packageRepo
+        .pair(req.id, req.nativePackageId, req.source)
+        .catch(handleError);
     },
   };
 };

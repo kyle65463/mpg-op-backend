@@ -15,8 +15,12 @@ export type RawProduct = PrismaProduct & {
 };
 
 const handleError = handlePrismaError({
-  [PrismaError.ForeignKeyConstraint]: RepoError.ProductNotFound,
   [PrismaError.NotFound]: RepoError.NotFound,
+});
+
+const handlePairError = handlePrismaError({
+  [PrismaError.ForeignKeyConstraint]: RepoError.NotFound,
+  [PrismaError.NotFound]: RepoError.NativeProductNotFound,
 });
 
 interface GetProductOptions {
@@ -98,6 +102,30 @@ export function createProductRepo(db: PrismaClient) {
           .catch(handleError);
         await db.product.delete({ where: { id } });
       });
+    },
+
+    pair: async (
+      productId: number,
+      nativeProductId: string,
+      source: string,
+    ): Promise<void> => {
+      await db.nativeProduct
+        .update({
+          where: {
+            id_source: {
+              id: nativeProductId,
+              source,
+            },
+          },
+          data: {
+            product: {
+              connect: {
+                id: productId,
+              },
+            },
+          },
+        })
+        .catch(handlePairError);
     },
   };
 }

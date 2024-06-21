@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { Package } from "@/models/package";
 import { RequestProps } from "@/utils/api/schema";
-import { Region } from "@/utils/enums";
+import { Region, Source } from "@/utils/enums";
 
 // #################################
 // Create package
@@ -55,3 +55,18 @@ export const DeletePackageRequest = {
 };
 
 export type DeletePackageRequest = RequestProps<typeof DeletePackageRequest>;
+
+// #################################
+// Pair package
+// #################################
+export const PairPackageRequest = {
+  params: z.object({
+    id: z.coerce.number().int(),
+  }),
+  body: z.object({
+    nativePackageId: z.string(),
+    source: z.nativeEnum(Source),
+  }),
+};
+
+export type PairPackageRequest = RequestProps<typeof PairPackageRequest>;

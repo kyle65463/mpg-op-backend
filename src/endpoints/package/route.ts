@@ -6,6 +6,7 @@ import {
   DeletePackageRequest,
   ListPackagesRequest,
   ListPackagesResponse,
+  PairPackageRequest,
 } from "./schema";
 import { PackageService } from "./service";
 
@@ -18,7 +19,7 @@ export const createPackageRoutes: CreateRoutes<{
       method: "post",
       path: "/api/v1/packages",
       summary: "Create a package",
-      needAuthenticated: true,
+      needAuthenticated: false,
       schemas: {
         request: CreatePackageRequest,
         response: { statusCode: 201 },
@@ -45,13 +46,30 @@ export const createPackageRoutes: CreateRoutes<{
       method: "delete",
       path: "/api/v1/packages/:id",
       summary: "Delete a package",
-      needAuthenticated: true,
+      needAuthenticated: false,
       schemas: {
         request: DeletePackageRequest,
         response: { statusCode: 204 },
       },
       errors: [ServiceError.PackageNotFound],
       handler: service.deletePackage,
+    });
+
+    createRoute({
+      server,
+      method: "post",
+      path: "/api/v1/packages/:id/pair",
+      summary: "Pair a package with a native package",
+      needAuthenticated: false,
+      schemas: {
+        request: PairPackageRequest,
+        response: { statusCode: 204 },
+      },
+      errors: [
+        ServiceError.PackageNotFound,
+        ServiceError.NativePackageNotFound,
+      ],
+      handler: service.pairPackage,
     });
   };
 };

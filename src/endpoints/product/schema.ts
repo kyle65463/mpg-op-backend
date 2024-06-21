@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { Product } from "@/models/product";
 import { RequestProps } from "@/utils/api/schema";
-import { Region } from "@/utils/enums";
+import { Region, Source } from "@/utils/enums";
 
 // #################################
 // Get product
@@ -66,3 +66,18 @@ export const DeleteProductRequest = {
 };
 
 export type DeleteProductRequest = RequestProps<typeof DeleteProductRequest>;
+
+// #################################
+// Pair product
+// #################################
+export const PairProductRequest = {
+  params: z.object({
+    id: z.coerce.number().int(),
+  }),
+  body: z.object({
+    nativeProductId: z.string(),
+    source: z.nativeEnum(Source),
+  }),
+};
+
+export type PairProductRequest = RequestProps<typeof PairProductRequest>;

@@ -15,6 +15,11 @@ const handleError = handlePrismaError({
   [PrismaError.NotFound]: RepoError.NotFound,
 });
 
+const handlePairError = handlePrismaError({
+  [PrismaError.ForeignKeyConstraint]: RepoError.NotFound,
+  [PrismaError.NotFound]: RepoError.NativePackageNotFound,
+});
+
 export interface CreatePackageData {
   name: string;
   region: Region;
@@ -82,6 +87,30 @@ export function createPackageRepo(db: PrismaClient) {
           .catch(handleError);
         await db.package.delete({ where: { id } });
       });
+    },
+
+    pair: async (
+      packageId: number,
+      nativePackageId: string,
+      source: string,
+    ): Promise<void> => {
+      await db.nativePackage
+        .update({
+          where: {
+            id_source: {
+              id: nativePackageId,
+              source,
+            },
+          },
+          data: {
+            package: {
+              connect: {
+                id: packageId,
+              },
+            },
+          },
+        })
+        .catch(handlePairError);
     },
   };
 }

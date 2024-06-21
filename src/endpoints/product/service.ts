@@ -16,11 +16,15 @@ import {
   ListProductsRequest,
   ListProductsRequestQuery,
   ListProductsResponse,
+  PairProductRequest,
 } from "./schema";
 
 function handleError(err: unknown): never {
   if (areErrorsEqual(err, RepoError.NotFound)) {
     throw ServiceError.ProductNotFound;
+  }
+  if (areErrorsEqual(err, RepoError.NativeProductNotFound)) {
+    throw ServiceError.NativeProductNotFound;
   }
   throw err;
 }
@@ -71,6 +75,12 @@ export const createProductService = ({
 
     deleteProduct: async (req: DeleteProductRequest): Promise<void> => {
       await productRepo.delete(req.id).catch(handleError);
+    },
+
+    pairProduct: async (req: PairProductRequest): Promise<void> => {
+      await productRepo
+        .pair(req.id, req.nativeProductId, req.source)
+        .catch(handleError);
     },
   };
 };
