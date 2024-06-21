@@ -9,7 +9,7 @@ import { formatPackage, Package } from "./package";
 export const Product = registerModelToApiDocs(
   "Product",
   z.object({
-    id: z.number(),
+    id: z.number().int(),
     name: z.string(),
     region: z.nativeEnum(Region),
     package: Package.array().optional(),

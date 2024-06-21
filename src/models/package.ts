@@ -7,7 +7,7 @@ import { Region } from "@/utils/enums";
 export const Package = registerModelToApiDocs(
   "Package",
   z.object({
-    id: z.number(),
+    id: z.number().int(),
     name: z.string(),
     region: z.nativeEnum(Region),
     productId: z.number().int(),

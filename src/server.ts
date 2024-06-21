@@ -6,16 +6,20 @@ import {
   createNativeProductService,
   NativeProductService,
 } from "./endpoints/nativeProduct/service";
+import { createOrderRoutes } from "./endpoints/order/route";
+import { createOrderService, OrderService } from "./endpoints/order/service";
 import { createPackageRoutes } from "./endpoints/package/route";
 import {
   createPackageService,
   PackageService,
 } from "./endpoints/package/service";
+import { createProductRoutes } from "./endpoints/product/route";
 import {
   createProductService,
   ProductService,
 } from "./endpoints/product/service";
 import { createNativeProductRepo } from "./repos/nativeProductRepo";
+import { createOrderRepo } from "./repos/orderRepo";
 import { createPackageRepo } from "./repos/packageRepo";
 import { createProductRepo } from "./repos/productRepo";
 import { APIServer, createServer } from "./utils/api/createServer";
@@ -26,6 +30,7 @@ interface Services {
   nativeProductService: NativeProductService;
   packageService: PackageService;
   productService: ProductService;
+  orderService: OrderService;
 }
 
 export function setupRealServices(): Services {
@@ -41,6 +46,7 @@ export function setupRealServices(): Services {
   const nativeProductRepo = createNativeProductRepo(db);
   const packageRepo = createPackageRepo(db);
   const productRepo = createProductRepo(db);
+  const orderRepo = createOrderRepo(db);
 
   // Services
   const nativeProductService = createNativeProductService({
@@ -52,11 +58,15 @@ export function setupRealServices(): Services {
   const productService = createProductService({
     productRepo,
   });
+  const orderService = createOrderService({
+    orderRepo,
+  });
 
   return {
     nativeProductService,
     packageService,
     productService,
+    orderService,
   };
 }
 
@@ -73,11 +83,15 @@ export function setupMockServices(): Services {
   const productService = createProductService({
     productRepo: mock(),
   });
+  const orderService = createOrderService({
+    orderRepo: mock(),
+  });
 
   return {
     nativeProductService,
     packageService,
     productService,
+    orderService,
   };
 }
 
@@ -87,6 +101,8 @@ export function setupMockServices(): Services {
 export async function setupServer({
   nativeProductService,
   packageService,
+  productService,
+  orderService,
 }: Services) {
   const server = createServer({
     healthCheckPath: "/api/v1/healthz",
@@ -97,6 +113,8 @@ export async function setupServer({
   });
   server.register(createNativeProductRoutes({ nativeProductService }));
   server.register(createPackageRoutes({ packageService }));
+  server.register(createProductRoutes({ productService }));
+  server.register(createOrderRoutes({ orderService }));
 
   await server.ready();
   return server;

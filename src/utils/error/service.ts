@@ -23,4 +23,7 @@ export const ServiceError = {
 
   // Package
   PackageNotFound: new NotFoundError("2000", "Package not found"),
+
+  // Order
+  OrderNotFound: new NotFoundError("3000", "Order not found"),
 };

@@ -18,6 +18,7 @@ model NativeProduct {
   product   Product?        @relation(fields: [productId], references: [id])
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
+  orders    Order[]
 
   @@id([id, source])
   @@map("native_products")
@@ -34,6 +35,7 @@ model NativePackage {
   package         Package?      @relation(fields: [packageId], references: [id])
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+  order           Order[]
 
   @@id([id, source])
   @@map("native_packages")
@@ -65,20 +67,24 @@ model Package {
 }
 
 model Order {
-  id              Int      @id @default(autoincrement())
-  status          String
-  quantity        Int
-  customer        Json
-  bookedAt        DateTime
-  departureAt     DateTime
-  nativeId        String
+  id          Int      @id @default(autoincrement())
+  status      String
+  quantity    Int
+  customer    Json
+  bookedAt    DateTime
+  departureAt DateTime
+  nativeId    String
+
+  nativeProduct   NativeProduct @relation(fields: [nativeProductId, nativeProductSource], references: [id, source])
   nativeProductId String
+  nativePackage   NativePackage @relation(fields: [nativePackageId, source], references: [id, source])
   nativePackageId String
   source          String
   region          String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  nativeProductSource String
 
   @@unique([nativeId, source])
   @@map("orders")
