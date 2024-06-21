@@ -6,13 +6,20 @@ import {
   createNativeProductService,
   NativeProductService,
 } from "./endpoints/nativeProduct/service";
+import { createPackageRoutes } from "./endpoints/package/route";
+import {
+  createPackageService,
+  PackageService,
+} from "./endpoints/package/service";
 import { createNativeProductRepo } from "./repos/nativeProductRepo";
+import { createPackageRepo } from "./repos/packageRepo";
 import { APIServer, createServer } from "./utils/api/createServer";
 import { env } from "./utils/env";
 import { logger } from "./utils/logger";
 
 interface Services {
   nativeProductService: NativeProductService;
+  packageService: PackageService;
 }
 
 export function setupRealServices(): Services {
@@ -26,14 +33,19 @@ export function setupRealServices(): Services {
 
   // Repos
   const nativeProductRepo = createNativeProductRepo(db);
+  const packageRepo = createPackageRepo(db);
 
   // Services
   const nativeProductService = createNativeProductService({
     nativeProductRepo,
   });
+  const packageService = createPackageService({
+    packageRepo,
+  });
 
   return {
     nativeProductService,
+    packageService,
   };
 }
 
@@ -44,16 +56,23 @@ export function setupMockServices(): Services {
   const nativeProductService = createNativeProductService({
     nativeProductRepo: mock(),
   });
+  const packageService = createPackageService({
+    packageRepo: mock(),
+  });
 
   return {
     nativeProductService,
+    packageService,
   };
 }
 
 /**
  * 建立 server 並註冊所有的 api routes
  */
-export async function setupServer({ nativeProductService }: Services) {
+export async function setupServer({
+  nativeProductService,
+  packageService,
+}: Services) {
   const server = createServer({
     healthCheckPath: "/api/v1/healthz",
     apiDocs: {
@@ -62,6 +81,7 @@ export async function setupServer({ nativeProductService }: Services) {
     },
   });
   server.register(createNativeProductRoutes({ nativeProductService }));
+  server.register(createPackageRoutes({ packageService }));
 
   await server.ready();
   return server;

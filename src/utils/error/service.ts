@@ -17,4 +17,10 @@ export const ServiceError = {
   Unauthorized: new UnauthorizedError("0005", "Unauthorized"),
   EmailNotVerified: new UnauthorizedError("0006", "Email not verified"),
   InvalidNextKey: new BadRequestError("0007", "Invalid next key"),
+
+  // Product
+  ProductNotFound: new NotFoundError("1000", "Package not found"),
+
+  // Package
+  PackageNotFound: new NotFoundError("2000", "Package not found"),
 };
