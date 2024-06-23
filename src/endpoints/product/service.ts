@@ -13,10 +13,10 @@ import {
   CreateProductRequest,
   DeleteProductRequest,
   GetProductRequest,
+  LinkProductRequest,
   ListProductsRequest,
   ListProductsRequestQuery,
   ListProductsResponse,
-  PairProductRequest,
 } from "./schema";
 
 function handleError(err: unknown): never {
@@ -61,7 +61,10 @@ export const createProductService = ({
         ? decodeNextKey(req.nextKey, ListProductsRequestQuery)
         : req;
 
-      const products = await productRepo.list(options);
+      const products = await productRepo.list({
+        ...options,
+        withPackages: true,
+      });
       const cursor =
         products.length === options.limit
           ? products[products.length - 1].id
@@ -77,9 +80,15 @@ export const createProductService = ({
       await productRepo.delete(req.id).catch(handleError);
     },
 
-    pairProduct: async (req: PairProductRequest): Promise<void> => {
+    linkProduct: async (req: LinkProductRequest): Promise<void> => {
       await productRepo
-        .pair(req.id, req.nativeProductId, req.source)
+        .link(req.id, req.nativeProductId, req.source)
+        .catch(handleError);
+    },
+
+    unlinkProduct: async (req: LinkProductRequest): Promise<void> => {
+      await productRepo
+        .unlink(req.id, req.nativeProductId, req.source)
         .catch(handleError);
     },
   };

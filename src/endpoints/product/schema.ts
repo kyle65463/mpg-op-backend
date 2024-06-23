@@ -68,9 +68,9 @@ export const DeleteProductRequest = {
 export type DeleteProductRequest = RequestProps<typeof DeleteProductRequest>;
 
 // #################################
-// Pair product
+// Link product
 // #################################
-export const PairProductRequest = {
+export const LinkProductRequest = {
   params: z.object({
     id: z.coerce.number().int(),
   }),
@@ -80,4 +80,4 @@ export const PairProductRequest = {
   }),
 };
 
-export type PairProductRequest = RequestProps<typeof PairProductRequest>;
+export type LinkProductRequest = RequestProps<typeof LinkProductRequest>;

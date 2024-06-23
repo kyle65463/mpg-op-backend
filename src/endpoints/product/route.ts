@@ -6,9 +6,9 @@ import {
   CreateProductRequest,
   DeleteProductRequest,
   GetProductRequest,
+  LinkProductRequest,
   ListProductsRequest,
   ListProductsResponse,
-  PairProductRequest,
 } from "./schema";
 import { ProductService } from "./service";
 
@@ -73,18 +73,35 @@ export const createProductRoutes: CreateRoutes<{
     createRoute({
       server,
       method: "post",
-      path: "/api/v1/products/:id/pair",
-      summary: "Pair a product with a native product",
+      path: "/api/v1/products/:id/link",
+      summary: "Link a product with a native product",
       needAuthenticated: false,
       schemas: {
-        request: PairProductRequest,
+        request: LinkProductRequest,
         response: { statusCode: 204 },
       },
       errors: [
         ServiceError.ProductNotFound,
         ServiceError.NativeProductNotFound,
       ],
-      handler: service.pairProduct,
+      handler: service.linkProduct,
+    });
+
+    createRoute({
+      server,
+      method: "post",
+      path: "/api/v1/products/:id/unlink",
+      summary: "Unlink a product with a native product",
+      needAuthenticated: false,
+      schemas: {
+        request: LinkProductRequest,
+        response: { statusCode: 204 },
+      },
+      errors: [
+        ServiceError.ProductNotFound,
+        ServiceError.NativeProductNotFound,
+      ],
+      handler: service.unlinkProduct,
     });
   };
 };

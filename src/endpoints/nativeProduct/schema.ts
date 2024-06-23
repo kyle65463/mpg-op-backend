@@ -10,8 +10,10 @@ import { Region, Source } from "@/utils/enums";
 export const ListNativeProductsRequestQuery = z.object({
   limit: z.coerce.number().min(1).max(40).default(30).optional(),
   name: z.string().optional(),
+  productId: z.coerce.number().int().optional(),
+  noProductId: z.coerce.boolean().optional(),
   region: z.nativeEnum(Region),
-  source: z.nativeEnum(Source),
+  source: z.nativeEnum(Source).optional(),
   offset: z.coerce.number().optional(),
 });
 

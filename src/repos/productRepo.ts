@@ -18,7 +18,7 @@ const handleError = handlePrismaError({
   [PrismaError.NotFound]: RepoError.NotFound,
 });
 
-const handlePairError = handlePrismaError({
+const handleLinkError = handlePrismaError({
   [PrismaError.ForeignKeyConstraint]: RepoError.NotFound,
   [PrismaError.NotFound]: RepoError.NativeProductNotFound,
 });
@@ -104,7 +104,7 @@ export function createProductRepo(db: PrismaClient) {
       });
     },
 
-    pair: async (
+    link: async (
       productId: number,
       nativeProductId: string,
       source: string,
@@ -125,7 +125,31 @@ export function createProductRepo(db: PrismaClient) {
             },
           },
         })
-        .catch(handlePairError);
+        .catch(handleLinkError);
+    },
+
+    unlink: async (
+      productId: number,
+      nativeProductId: string,
+      source: string,
+    ): Promise<void> => {
+      await db.product
+        .findUniqueOrThrow({ where: { id: productId } })
+        .catch(handleError);
+      await db.nativeProduct
+        .update({
+          where: {
+            id_source: {
+              id: nativeProductId,
+              source,
+            },
+            productId,
+          },
+          data: {
+            productId: null,
+          },
+        })
+        .catch(handleLinkError);
     },
   };
 }

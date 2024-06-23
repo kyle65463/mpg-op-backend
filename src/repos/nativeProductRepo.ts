@@ -17,6 +17,8 @@ export type RawNativePackage = PrismaNativePackage;
 
 export interface ListNativeProductsOptions {
   name?: string;
+  productId?: number;
+  noProductId?: boolean;
   region?: Region;
   source?: Source;
   limit?: number;
@@ -45,6 +47,15 @@ export function createNativeProductRepo(db: PrismaClient) {
 
       if (options.name) {
         query.where!.name = { contains: options.name };
+      }
+
+      if (options.productId) {
+        query.where!.productId = options.productId;
+      }
+      // TODO: Handle cases when both productId and noProductId are provided
+
+      if (options.noProductId) {
+        query.where!.productId = null;
       }
 
       if (options.region) {
