@@ -27,9 +27,13 @@ interface GetProductOptions {
   withPackages?: boolean;
 }
 
-export interface CreateProductData {
+export interface ProductCreationData {
   name: string;
   region: Region;
+}
+
+export interface ProductUpdateData {
+  name: string;
 }
 
 export interface ListProductsOptions {
@@ -53,7 +57,7 @@ export function createProductRepo(db: PrismaClient) {
         .catch(handleError);
     },
 
-    create: async (data: CreateProductData): Promise<RawProduct> => {
+    create: async (data: ProductCreationData): Promise<RawProduct> => {
       const product = await db.product
         .create({
           data: {
@@ -92,6 +96,23 @@ export function createProductRepo(db: PrismaClient) {
       });
 
       return products;
+    },
+
+    update: async (
+      id: number,
+      data: ProductUpdateData,
+    ): Promise<RawProduct> => {
+      const product = await db.product
+        .update({
+          where: {
+            id: id,
+          },
+          data: {
+            name: data.name,
+          },
+        })
+        .catch(handleError);
+      return product;
     },
 
     delete: async (id: number): Promise<void> => {

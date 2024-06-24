@@ -57,6 +57,20 @@ export const ListProductsResponse = z.object({
 export type ListProductsResponse = z.infer<typeof ListProductsResponse>;
 
 // #################################
+// Update product
+// #################################
+export const UpdateProductRequest = {
+  params: z.object({
+    id: z.coerce.number().int(),
+  }),
+  body: z.object({
+    name: z.string(),
+  }),
+};
+
+export type UpdateProductRequest = RequestProps<typeof UpdateProductRequest>;
+
+// #################################
 // Delete product
 // #################################
 export const DeleteProductRequest = {

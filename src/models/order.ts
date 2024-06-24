@@ -46,10 +46,14 @@ export function formatOrder(raw: RawOrder): Order {
     product: {
       id: raw.nativeProduct.productId,
       // TODO: Show the name of product instead of native product
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       name: raw.nativeProduct.product?.name ?? raw.nativeProduct.name,
     },
     package: {
       id: raw.nativePackage.packageId,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       name: raw.nativePackage.package?.name ?? raw.nativePackage.name,
     },
     region: raw.region as Region,

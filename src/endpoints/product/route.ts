@@ -9,6 +9,7 @@ import {
   LinkProductRequest,
   ListProductsRequest,
   ListProductsResponse,
+  UpdateProductRequest,
 } from "./schema";
 import { ProductService } from "./service";
 
@@ -54,6 +55,19 @@ export const createProductRoutes: CreateRoutes<{
         response: ListProductsResponse,
       },
       handler: service.listProducts,
+    });
+
+    createRoute({
+      server,
+      method: "put",
+      path: "/api/v1/products/:id",
+      summary: "Update a product",
+      needAuthenticated: false,
+      schemas: {
+        request: UpdateProductRequest,
+        response: { statusCode: 204 },
+      },
+      handler: service.updateProduct,
     });
 
     createRoute({

@@ -17,6 +17,7 @@ import {
   ListProductsRequest,
   ListProductsRequestQuery,
   ListProductsResponse,
+  UpdateProductRequest,
 } from "./schema";
 
 function handleError(err: unknown): never {
@@ -74,6 +75,13 @@ export const createProductService = ({
         items: products.map(formatProduct),
         nextKey: cursor ? encodeNextKey({ ...options, cursor }) : null,
       };
+    },
+
+    updateProduct: async ({
+      id,
+      ...data
+    }: UpdateProductRequest): Promise<void> => {
+      await productRepo.update(id, data).catch(handleError);
     },
 
     deleteProduct: async (req: DeleteProductRequest): Promise<void> => {
