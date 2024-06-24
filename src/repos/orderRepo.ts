@@ -28,7 +28,7 @@ const handleError = handlePrismaError({
 export interface ListOrdersOptions {
   region?: Region;
   limit?: number;
-  cursor?: number;
+  offset?: number;
 }
 
 export function createOrderRepo(db: PrismaClient) {
@@ -45,18 +45,15 @@ export function createOrderRepo(db: PrismaClient) {
     list: async (options: ListOrdersOptions): Promise<RawOrder[]> => {
       const query: Prisma.OrderFindManyArgs = {
         where: {},
-        orderBy: { id: "asc" },
+        orderBy: { departureAt: "desc" },
       };
 
       if (options.region) {
         query.where!.region = options.region;
       }
 
-      if (options.cursor) {
-        query.cursor = {
-          id: options.cursor,
-        };
-        query.skip = 1;
+      if (options.offset) {
+        query.skip = options.offset;
       }
 
       const orders = await db.order.findMany({

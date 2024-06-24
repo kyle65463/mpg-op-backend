@@ -21,7 +21,7 @@ export type GetOrderRequest = RequestProps<typeof GetOrderRequest>;
 export const ListOrdersRequestQuery = z.object({
   region: z.nativeEnum(Region),
   limit: z.coerce.number().min(1).max(40).default(30).optional(),
-  cursor: z.coerce.number().int().optional(),
+  offset: z.coerce.number().int().optional(),
 });
 
 export type ListOrdersRequestQuery = z.infer<typeof ListOrdersRequestQuery>;
@@ -29,7 +29,7 @@ export type ListOrdersRequestQuery = z.infer<typeof ListOrdersRequestQuery>;
 export const ListOrdersRequest = {
   query: z
     .object({ nextKey: z.string() })
-    .or(ListOrdersRequestQuery.omit({ cursor: true }))
+    .or(ListOrdersRequestQuery)
     .openapi({ param: { name: "query" } }),
 };
 

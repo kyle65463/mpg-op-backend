@@ -46,11 +46,11 @@ export function formatOrder(raw: RawOrder): Order {
     product: {
       id: raw.nativeProduct.productId,
       // TODO: Show the name of product instead of native product
-      name: raw.nativeProduct.name,
+      name: raw.nativeProduct.product?.name ?? raw.nativeProduct.name,
     },
     package: {
-      id: raw.nativePackage?.packageId,
-      name: raw.nativePackage?.name,
+      id: raw.nativePackage.packageId,
+      name: raw.nativePackage.package?.name ?? raw.nativePackage.name,
     },
     region: raw.region as Region,
     source: raw.source as Source,

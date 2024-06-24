@@ -40,12 +40,14 @@ export const createOrderService = ({ orderRepo }: { orderRepo: OrderRepo }) => {
         : req;
 
       const orders = await orderRepo.list(options);
-      const cursor =
-        orders.length === options.limit ? orders[orders.length - 1].id : null;
+      const offset =
+        orders.length === options.limit
+          ? (options.offset ?? 0) + options.limit
+          : null;
 
       return {
         items: orders.map(formatOrder),
-        nextKey: cursor ? encodeNextKey({ ...options, cursor }) : null,
+        nextKey: offset ? encodeNextKey({ ...options, offset }) : null,
       };
     },
   };

@@ -75,16 +75,15 @@ model Order {
   departureAt DateTime
   nativeId    String
 
-  nativeProduct   NativeProduct @relation(fields: [nativeProductId, nativeProductSource], references: [id, source])
+  nativeProduct   NativeProduct @relation(fields: [nativeProductId, source], references: [id, source])
   nativeProductId String
   nativePackage   NativePackage @relation(fields: [nativePackageId, source], references: [id, source])
   nativePackageId String
   source          String
   region          String
 
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  nativeProductSource String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([nativeId, source])
   @@map("orders")
